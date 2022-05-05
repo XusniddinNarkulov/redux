@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { createStore } from "redux";
+import { createStore, combineReducers } from "redux";
+import App from "./App";
 
 function arrayRemove(arr, value) {
    return arr.filter(function (ele) {
@@ -46,31 +47,38 @@ const addMusicReducer = (list = [], obj) => {
    }
    return list;
 };
+
 const findMusicReducer = (list = [], obj) => {
    if (obj.type === "find") {
       const mus = obj.music.info.addMusicReducer.find(
-         (val) => val.music.name == obj.music.name
+         (val) => val.name == obj.music.name
       );
-      return mus.music.time;
+      return mus.time;
    }
    return list;
 };
 
 const removeMusicReducer = (list = [], obj) => {
    if (obj.type === "remove") {
-      const mus = obj.music.info.addMusicReducer.find(
-         (val) => val.music.name == obj.music.name
-      );
-      return arrayRemove(list, mus);
+      return obj.music.info.addMusicReducer.filter((val) => {
+         return val.name !== obj.music.name;
+      });
    }
+   return list;
 };
 
-let store = createStore(addMusicReducer);
+let store = createStore(
+   combineReducers({
+      addMusicReducer,
+      findMusicReducer,
+      removeMusicReducer,
+   })
+);
 
-store.subscribe(() => console.log(store.getState()));
+// store.subscribe(() => console.log(store.getState()));
 
 store.dispatch(addMusic("hello", "2:44 "));
-store.dispatch(addMusic("hell01", "3:44 "));
+store.dispatch(addMusic("hello1", "3:44 "));
 store.dispatch(findMusicTime("hello", store.getState()));
 store.dispatch(removeMusic("hello1", store.getState()));
 
@@ -80,6 +88,6 @@ store.dispatch(removeMusic("hello1", store.getState()));
 
 // const store = createStore(departaments);
 
-// store.dispatch(addMusic("hello"));
+console.log(store.getState());
 
-// console.log(store.getState());
+ReactDOM.render(<App />, document.querySelector("#root"));
