@@ -7,9 +7,9 @@ import { Provider } from "react-redux";
 import "./index.css";
 
 import App from "./components/App";
-import reducer from "./reducers/reducers";
+import reducers from "./reducers/reducers";
 
-const store = createStore(reducer);
+const store = createStore(reducers);
 // console.log(store.getState());
 
 ReactDOM.render(

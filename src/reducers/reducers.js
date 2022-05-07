@@ -7,17 +7,20 @@ const songList = [
    },
    {
       name: "salom",
-      time: "2:22",
-      author: "Rahim",
+      time: "3:34",
+      author: "RahimGrid",
    },
    {
       name: "hello",
-      time: "2:22",
+      time: "4:56",
       author: "Adele",
    },
 ];
 
 const songListReducer = (history = songList, song) => {
+   if (song.type === "ADD") {
+      return (history = [...history, song.payload]);
+   }
    return history;
 };
 
@@ -28,5 +31,5 @@ const selectSongReducer = (history = [], selectedSong) => {
    return history;
 };
 
-const reducer = combineReducers({ songListReducer, selectSongReducer });
-export default reducer;
+const reducers = combineReducers({ songListReducer, selectSongReducer });
+export default reducers;
